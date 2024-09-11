@@ -60,7 +60,7 @@ export const PanCardModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isO
 
                 <div className="flex flex-col w-full justify-start items-start gap-2 mb-6 px-2">
                   <p className='text-left text-base text-medium text-gray-800'>Name: <span className='font-semibold'>John Doe</span></p>
-                  <p className='text-left text-base'>Father's Name: <span className='font-semibold'>Senior John Doe</span></p>
+                  <p className='text-left text-base'>Father&apos;s Name: <span className='font-semibold'>Senior John Doe</span></p>
                   <p>DOB: <span className='font-semibold'> 01-01-2000</span></p>
                 </div>
 
