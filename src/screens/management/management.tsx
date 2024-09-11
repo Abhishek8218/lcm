@@ -3,6 +3,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea } from 'lucide-react'; // Import Lucide icons
+import { useRouter } from 'next/navigation';
 
 const fetchManagementData = async () => {
   const response = await fetch('/dummyJSON/management.json');
@@ -13,6 +14,9 @@ const fetchManagementData = async () => {
 };
 
 export const Management: React.FC = () => {
+
+const router = useRouter();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['managementData'],
     queryFn: fetchManagementData,
@@ -39,15 +43,15 @@ export const Management: React.FC = () => {
         </div>
 
         <div className="flex justify-between pb-6 pt-4">
-          <button className="text-center flex flex-col items-center text-white">
-            <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1} />
+          <button className="text-center flex flex-col items-center text-white" >
+            <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1}  onClick={() => {router.push("/new-case")}}/>
             <span className='text-xs'>New Case</span>
           </button>
           <button className="text-center flex flex-col items-center text-white">
             <IndianRupee className="w-9 h-9 pb-1"  strokeWidth={1} />
             <span className='text-xs'>Repayment</span>
           </button>
-          <button className="text-center flex flex-col items-center text-white">
+          <button className="text-center flex flex-col items-center text-white" onClick={() => {router.push("/new-customer")}}>
             <Users className="w-9 h-9 pb-1"  strokeWidth={1}/>
             <span className='text-xs'>Customers</span>
           </button>
