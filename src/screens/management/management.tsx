@@ -2,7 +2,7 @@
 'use client'
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea } from 'lucide-react'; // Import Lucide icons
+import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea, Loader2 } from 'lucide-react'; // Import Lucide icons
 import { useRouter } from 'next/navigation';
 
 const fetchManagementData = async () => {
@@ -22,11 +22,11 @@ const router = useRouter();
     queryFn: fetchManagementData,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div><Loader2 className=' absolute top-1/2 right-1/2 animate-spin'/></div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className=" bg-white min-h-screen">
+    <div className=" bg-white">
      <nav className='bg-main px-4'>
       <header className="flex items-center justify-between py-4  text-white">
         <div className="text-lg font-semibold">Logo</div>

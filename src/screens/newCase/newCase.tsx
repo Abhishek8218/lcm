@@ -50,7 +50,7 @@ export const NewCase = () => {
 
   return (
     <div className="flex flex-col  bg-gray-50">
-          <header className="flex items-center justify-start gap-[25%] p-4 bg-blue-800 text-white">
+          <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
         <ArrowLeft className="w-6 h-6" onClick={() => {router.push("/")}} />
         <div className="text-lg text-center font-semibold">New Customer</div>
       </header>
