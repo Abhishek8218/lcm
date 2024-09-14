@@ -108,7 +108,7 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
     };
 
     return (
-      <div ref={searchBarRef} className="relative  flex  justify-center items-center se w-full max-w-md mx-auto">
+      <div className="relative  flex  justify-center items-center se w-full max-w-md mx-auto">
        <div className='relative w-[350px] '>
         <input
           ref={inputRef}
@@ -116,7 +116,7 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
           type="text"
           value={query}
         
-          tabIndex={isSheetOpen ? -1 : 0} // Disable tabbing into input when bottom sheet is open
+          // tabIndex={isSheetOpen ? -1 : 0} // Disable tabbing into input when bottom sheet is open
           onChange={handleChange}
           className="w-[350px] flex gap-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
           placeholder="Search..."
@@ -164,6 +164,7 @@ type HighlightedTextProps = {
   text: string;
   query: string;
 };
+
 
 const HighlightedText = ({ text, query }: HighlightedTextProps) => {
   if (!query) return <>{text}</>;

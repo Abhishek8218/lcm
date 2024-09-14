@@ -11,7 +11,16 @@ interface OtpModalProps {
 }
 
 const defaultSuggestions = [
-  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George'
+  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George','Samantha', 'Harry', 'Olivia', 'Isabella', 'Mason', 'Sophia', 'James', 
+  'Ava', 'Liam', 'Ethan', 'Noah', 'Emma', 'Michael', 'Lucas', 'Amelia'
+];
+const customers = [
+  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Kelly',
+  'Samantha', 'Harry', 'Olivia', 'Isabella', 'Mason', 'Sophia', 'James', 
+  'Ava', 'Liam', 'Ethan', 'Noah', 'Emma', 'Michael', 'Lucas', 'Amelia',
+  'Alexander', 'Mia', 'Benjamin', 'Charlotte', 'Jack', 'Lily', 'Daniel',
+  'Ella', 'Henry', 'Grace', 'Matthew', 'Zoe', 'Owen', 'Scarlett', 
+  'Ryan', 'Hazel', 'Gabriel', 'Aria', 'William', 'Chloe', 'Sebastian'
 ];
 
 export const CustomerModal: React.FC<OtpModalProps> = ({ isOpen, onSelect }) => {
@@ -23,13 +32,19 @@ export const CustomerModal: React.FC<OtpModalProps> = ({ isOpen, onSelect }) => 
     closeModal();
   };
 
-  
+ const  snapPoints=[400,700]
 
   return (
     <BottomSheet
       open={isOpen}
-      onDismiss={closeModal}
+     onDismiss={closeModal}
+      initialFocusRef={false}
+    
+
+      // onSpringCancel={() => console.log('spring cancel')}
+  
 // Configuring the snap point to 50% of the viewport height
+snapPoints={() => snapPoints}
       header={
         <div className="flex flex-col justify-between items-center px-4">
           <div className='flex flex-row justify-between items-center w-full'>
@@ -39,7 +54,7 @@ export const CustomerModal: React.FC<OtpModalProps> = ({ isOpen, onSelect }) => 
           <div className="w-full pt-2">
 
           <SearchBar
-            suggestions={defaultSuggestions}
+            suggestions={customers}
             onSelect={(value) => handleSelect(value)}
           />
         </div>

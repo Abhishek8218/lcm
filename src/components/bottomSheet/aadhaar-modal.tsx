@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import { sheetState, useModal } from './useModal';
+import {  useModal } from './useModal';
 import { LucideLoader2, X } from 'lucide-react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { useRecoilState } from 'recoil';
+
 
 interface OtpModalProps {
   onVerify: (otp: string) => void;
@@ -16,7 +16,7 @@ interface OtpModalProps {
 export const AadhaarModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOpen, isSuccess }) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const isSheetOpen = useRecoilState(sheetState)
+
   const { closeModal } = useModal();
 
 
@@ -50,6 +50,7 @@ export const AadhaarModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isO
       <BottomSheet
         open={isOpen}
         onDismiss={closeModal}
+        initialFocusRef={false}
         header={
           <div className="flex flex-col justify-between items-center px-4">
             <div className="flex flex-row justify-end items-center w-full">
@@ -81,7 +82,7 @@ export const AadhaarModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isO
                     maxLength={1}
                     autoFocus={false}
                     value={digit}
-                    tabIndex={isSheetOpen ? -1 : 0}
+               
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     ref={(el) => {

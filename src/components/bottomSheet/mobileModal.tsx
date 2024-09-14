@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { LucideLoader2, X } from 'lucide-react';
-import { sheetState, useModal } from './useModal';
-import { useRecoilState } from 'recoil';
+import { useModal } from './useModal';
+
 
 interface OtpModalProps {
   onVerify: (otp: string) => void;
@@ -16,7 +16,7 @@ interface OtpModalProps {
 export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOpen, isSuccess }) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const isSheetOpen = useRecoilState(sheetState)
+
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -49,6 +49,7 @@ export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOp
       <BottomSheet
         open={isOpen}
         onDismiss={closeModal}
+        initialFocusRef={false}
         header={
           <div className="flex flex-col justify-between items-center px-4">
             <div className="flex flex-row justify-end items-center w-full">
@@ -75,7 +76,7 @@ export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOp
                     type="text"
                     placeholder="-"
                     maxLength={1}
-                    tabIndex={isSheetOpen ? -1 : 0}
+               
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
