@@ -45,12 +45,13 @@ export const NewCase = () => {
   };
 
     const handleCustomerSelect = (value: string) => {
-        setCustomer(value);
+      setCustomer(value);
+      setValue("customer", value);
         
     };
 
   return (
-    <div className="flex flex-col  bg-gray-50">
+    <div className="flex flex-col  bg-gray-50 ">
           <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
         <ArrowLeft className="w-6 h-6" onClick={() => {router.push("/")}} />
         <div className="text-lg text-center font-semibold">New Case</div>
@@ -73,10 +74,11 @@ export const NewCase = () => {
                     type="text"
                   readOnly
                   value={customer}
+
               
                     placeholder="Select Customer"
 
-                    className="flex-1 pl-2 py-3 border rounded-lg"
+                    className="flex-1 pl-2 py-3 border rounded-lg "
                     
                   /> 
                 )}

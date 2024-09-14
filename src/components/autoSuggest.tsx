@@ -108,7 +108,8 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
     };
 
     return (
-      <div ref={searchBarRef} className="relative w-full max-w-md mx-auto">
+      <div ref={searchBarRef} className="relative  flex  justify-center items-center se w-full max-w-md mx-auto">
+       <div className='relative w-[350px] '>
         <input
           ref={inputRef}
           id="search-input"
@@ -133,6 +134,7 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
             <Search size={24} color="#B4B4B8" />
           </div>
         )}
+        </div>
         {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
         {showSuggestions && (
           <ul className="absolute max-h-[300px] overflow-y-scroll overflow-x-hidden w-[350px] mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10">

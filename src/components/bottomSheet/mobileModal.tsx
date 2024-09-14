@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import { useModal } from './useModal';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import 'react-spring-bottom-sheet/dist/style.css';
 import { LucideLoader2, X } from 'lucide-react';
+import { sheetState, useModal } from './useModal';
+import { useRecoilState } from 'recoil';
 
 interface OtpModalProps {
   onVerify: (otp: string) => void;
@@ -13,6 +16,7 @@ interface OtpModalProps {
 export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOpen, isSuccess }) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const isSheetOpen = useRecoilState(sheetState)
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -20,17 +24,6 @@ export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOp
       onVerify(otp.join(''));
     }
   }, [otp, onVerify]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   const handleChange = (index: number, value: string) => {
     if (/^[0-9]?$/.test(value)) {
@@ -52,45 +45,37 @@ export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOp
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black transition-opacity duration-300 ${
-          isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={closeModal}
-      />
-
-      {/* Bottom Sheet */}
-      <div
-        className={`fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-y-0' : 'translate-y-full'
-        }`}
+      {/* Spring Bottom Sheet Modal */}
+      <BottomSheet
+        open={isOpen}
+        onDismiss={closeModal}
+        header={
+          <div className="flex flex-col justify-between items-center px-4">
+            <div className="flex flex-row justify-end items-center w-full">
+              <X className="w-6 h-6 text-gray-400 cursor-pointer" onClick={closeModal} />
+            </div>
+          </div>
+        }
       >
         <div className="p-6 max-h-[80vh] overflow-y-auto">
           {isSuccess ? (
-            <div className='relative flex flex-col min-h-[300px] justify-center items-center'>
-              <Image src="/verified.svg" alt='verified logo' height={134} width={134} />
-              <div>
-                <X className='absolute right-0 top-0 w-6 h-6 text-gray-400 cursor-pointer' onClick={closeModal} />
-              </div>
+            <div className="relative flex flex-col min-h-[300px] justify-center items-center">
+              <Image src="/verified.svg" alt="verified logo" height={134} width={134} />
               <div className="text-center text-lg font-semibold">Mobile Number Verified</div>
             </div>
           ) : (
-            <div className='relative w-full flex flex-col justify-center items-center gap-2 pb-6 min-h-[300px]'>
-              <div>
-                <X className='absolute right-0 top-0 w-6 h-6 text-gray-400 cursor-pointer' onClick={closeModal} />
-              </div>
-
-              <Image src="/mobile.svg" alt='mobile logo' height={80} width={120} />
-              <div className='text-xl font-semibold'>Verify OTP</div>
+            <div className="relative w-full flex flex-col justify-center items-center gap-2 pb-6 min-h-[300px]">
+              <Image src="/mobile.svg" alt="mobile logo" height={80} width={120} />
+              <div className="text-xl font-semibold">Verify OTP</div>
 
               <div className="flex justify-between gap-2 mb-6">
                 {otp.map((digit, index) => (
                   <input
                     key={index}
                     type="text"
-                    placeholder='-'
+                    placeholder="-"
                     maxLength={1}
+                    tabIndex={isSheetOpen ? -1 : 0}
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
@@ -106,18 +91,20 @@ export const MobileModal: React.FC<OtpModalProps> = ({ onVerify, isLoading, isOp
                 ))}
               </div>
 
-              <div className='flex justify-between items-center w-full p-2'>
-                <p className='text-base font-medium text-gray-500 cursor-pointer'>Resend</p>
-                <p className='text-base font-medium text-gray-500 cursor-pointer' onClick={closeModal}>Edit Mobile No.</p>
+              <div className="flex justify-between items-center w-full p-2">
+                <p className="text-base font-medium text-gray-500 cursor-pointer">Resend</p>
+                <p className="text-base font-medium text-gray-500 cursor-pointer" onClick={closeModal}>
+                  Edit Mobile No.
+                </p>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </BottomSheet>
 
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <LucideLoader2 size={40} className='animate-spin text-white' />
+          <LucideLoader2 size={40} className="animate-spin text-white" />
         </div>
       )}
     </>
