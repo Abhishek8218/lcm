@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useModal } from './useModal';
 import { X } from 'lucide-react';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import 'react-spring-bottom-sheet/dist/style.css'; // Import the library's styles
 import SearchBar from '../autoSuggest';
 
 interface OtpModalProps {
@@ -8,60 +10,59 @@ interface OtpModalProps {
   isOpen: boolean;
 }
 
-const customers = [
-  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Kelly',
-  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Kelly',
-  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Kelly',
-  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Samantha',
-  'Kelly', 'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George', 'Kelly',
+const defaultSuggestions = [
+  'Adam', 'Bella', 'Charlie', 'David', 'Fiona', 'George'
 ];
 
 export const CustomerModal: React.FC<OtpModalProps> = ({ isOpen, onSelect }) => {
   const { closeModal } = useModal();
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   const handleSelect = (value: string) => {
     onSelect(value);
     closeModal();
   };
 
-  return (
-    <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black transition-opacity duration-300 ${
-          isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={closeModal}
-      />
+  
 
-      {/* Bottom Sheet */}
-      <div
-        className={`fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-y-0' : 'translate-y-full'
-        }`}
-      >
-        <div className="p-6 max-h-[80vh] overflow-y-auto">
-          <div className='relative w-full min-h-[300px] flex flex-col justify-start items-start gap-2'>
-            <div>
-              <X className='absolute right-0 top-0 w-6 h-6 text-gray-400 cursor-pointer' onClick={closeModal} />
-            </div>
-            <div className='pt-10 w-full'>
-              <SearchBar suggestions={customers} onSelect={handleSelect} />
-            </div>
+  return (
+    <BottomSheet
+      open={isOpen}
+      onDismiss={closeModal}
+// Configuring the snap point to 50% of the viewport height
+      header={
+        <div className="flex flex-col justify-between items-center px-4">
+          <div className='flex flex-row justify-between items-center w-full'>
+          <h2 className="text-lg font-bold">Select Customer</h2>
+          <X className="w-6 h-6 text-gray-400 cursor-pointer" onClick={closeModal} />
           </div>
+          <div className="w-full pt-2">
+
+          <SearchBar
+            suggestions={defaultSuggestions}
+            onSelect={(value) => handleSelect(value)}
+          />
+        </div>
+        </div>
+        
+      }
+    >
+      <div className="">
+       
+        <div className="w-full">
+          <ul className="bg-white rounded-lg">
+            {defaultSuggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="px-8 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-200 text-lg font-semibold text-gray-700"
+                onClick={() => handleSelect(suggestion)}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-    </>
+    </BottomSheet>
   );
 };

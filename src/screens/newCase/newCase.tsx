@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -52,7 +53,7 @@ export const NewCase = () => {
     <div className="flex flex-col  bg-gray-50">
           <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
         <ArrowLeft className="w-6 h-6" onClick={() => {router.push("/")}} />
-        <div className="text-lg text-center font-semibold">New Customer</div>
+        <div className="text-lg text-center font-semibold">New Case</div>
       </header>
       <main className="flex-1 ">
         <form onSubmit={handleSubmit(onSubmit)} className="pt-10 flex flex-col justify-between gap-10 min-h-[85vh]">
@@ -72,7 +73,7 @@ export const NewCase = () => {
                     type="text"
                   readOnly
                   value={customer}
-                    onFocus={() => openModal('customer-modal')}
+                    onClick={() => openModal('customer-modal')}
                     placeholder="Select Customer"
 
                     className="flex-1 pl-2 py-3 border rounded-lg"
@@ -158,6 +159,7 @@ export const NewCase = () => {
             {errors.finalAmount && <p className="mt-1 text-sm text-red-600">{errors.finalAmount.message}</p>}
           </div>
           </div>
+          
           <CustomerModal isOpen={modalStack.includes('customer-modal')}  onSelect={handleCustomerSelect} />
           <div className='w-full border-t border-[#D1D9E3] p-4'>
           <button type="submit" className="w-full self-end p-3 mt-6 text-white bg-green-600 rounded-lg">
