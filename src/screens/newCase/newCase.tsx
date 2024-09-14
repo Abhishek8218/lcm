@@ -73,7 +73,7 @@ export const NewCase = () => {
                     type="text"
                   readOnly
                   value={customer}
-                    onClick={() => openModal('customer-modal')}
+              
                     placeholder="Select Customer"
 
                     className="flex-1 pl-2 py-3 border rounded-lg"
