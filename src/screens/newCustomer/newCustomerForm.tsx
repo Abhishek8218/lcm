@@ -10,6 +10,7 @@ import { useModal } from "@/src/components/bottomSheet/useModal";
 import { MobileModal } from "@/src/components/bottomSheet/mobileModal";
 import { PanCardModal } from "@/src/components/bottomSheet/panCardModal";
 import { useRouter } from "next/navigation";
+import FileUploadComponent from "@/src/components/fileUpload";
 
 // Validation schema using Yup
 const schema = Yup.object().shape({
@@ -118,6 +119,10 @@ export const NewCustomerForm: React.FC = () => {
       setIsPanVerified(true); // Change based on API response
     }, 2000);
   };
+
+
+  
+
 
   return (
     <div className="relative bg-white">
@@ -281,11 +286,18 @@ export const NewCustomerForm: React.FC = () => {
                 {isMobileVerified ? "Verified" : "Verify"}
               </button>
             </div>
-          </div>
-          {errors.mobile && (
+            {errors.mobile && (
             <p className="text-red-500 text-xs mt-1">{errors.mobile.message}</p>
           )}
+          </div>
+          <FileUploadComponent/>
         </div>
+
+
+
+        
+
+
 
         <AadhaarModal
           isOpen={modalStack.includes("aadhaar-modal")}

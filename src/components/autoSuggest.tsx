@@ -100,7 +100,7 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
       setShowSuggestions(false);
       setJustSelected(true);
       onSelect(value);
-
+      
       // Prevent re-focusing after selection
       if (inputRef.current) {
         inputRef.current.blur(); // Ensure the input is blurred
@@ -137,7 +137,7 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
         </div>
         {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
         {showSuggestions && (
-          <ul className="absolute max-h-[300px] overflow-y-scroll overflow-x-hidden w-[350px] mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+          <ul className="absolute max-h-[300px] top-10 overflow-y-scroll overflow-x-hidden w-[350px] mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
             {filteredSuggestions.length > 0 ? (
               filteredSuggestions.map((suggestion, index) => (
                 <li
