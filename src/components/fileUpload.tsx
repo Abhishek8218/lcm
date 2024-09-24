@@ -55,7 +55,7 @@ const FileUploadComponent = () => {
       {/* File Input with Beautiful Design */}
       <div className=" ">
         
-        <div className="relative w-full">
+        <div className="relative w-full overflow-x-clip ">
           <input
             type="file"
             onChange={handleFileChange}
@@ -67,11 +67,11 @@ const FileUploadComponent = () => {
             className="flex items-center justify-center w-full px-6 py-4 m-2  border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
           >
             {selectedFile ? (
-              <span className="text-sm text-gray-600">{selectedFile.name}</span>
+              <span className="text-sm text-gray-600 max-w-80 ">{selectedFile.name}</span>
             ) : (
-              <div className="flex flex-col items-center justify-center space-y-2">
+              <div className="flex flex-col items-center justify-center space-y-2 text-wrap">
            <Upload size={24} color="#B4B4B8" />
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500  ">
                 Click to select a file
                 </span>
               </div>
