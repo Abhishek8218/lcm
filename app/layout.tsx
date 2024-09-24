@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/src/providers";
 import { Suspense } from "react";
 import Loading from "./loading";
+import 'react-spring-bottom-sheet/dist/style.css'; 
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

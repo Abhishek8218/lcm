@@ -4,8 +4,12 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea, Loader2 } from 'lucide-react'; // Import Lucide icons
 import { useRouter } from 'next/navigation';
+import { KYCBottomSheet } from '@/src/components/bottomSheet/kycOptionSheet';
+import { useModal } from '@/src/components/bottomSheet/useModal';
 
 const fetchManagementData = async () => {
+
+  
   const response = await fetch('/dummyJSON/management.json');
   if (!response.ok) {
     throw new Error('Network response was not ok');
@@ -13,9 +17,18 @@ const fetchManagementData = async () => {
   return response.json();
 };
 
+
+
+
 export const Management: React.FC = () => {
+  const { openModal, modalStack } = useModal();
 
 const router = useRouter();
+
+const handleCustomerClick = () => {
+  openModal("kyc-modal");
+}
+
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['managementData'],
@@ -51,7 +64,7 @@ const router = useRouter();
             <IndianRupee className="w-9 h-9 pb-1"  strokeWidth={1} />
             <span className='text-xs'>Repayment</span>
           </button>
-          <button className="text-center flex flex-col items-center text-white" onClick={() => {router.push("/new-customer")}}>
+          <button className="text-center flex flex-col items-center text-white" onClick={handleCustomerClick}>
             <Users className="w-9 h-9 pb-1"  strokeWidth={1}/>
             <span className='text-xs'>Customers</span>
           </button>
@@ -113,7 +126,10 @@ const router = useRouter();
 </div>
 
 
-
+<KYCBottomSheet
+          isOpen={modalStack.includes("kyc-modal")}
+   
+        />
 
 
       </div>

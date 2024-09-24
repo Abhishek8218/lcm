@@ -64,7 +64,7 @@ const FileUploadComponent = () => {
           />
           <label
             htmlFor="file-upload"
-            className="flex items-center justify-center w-full px-6 py-4 m-2  border-gray-300 rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors duration-300 ease-in-out"
+            className="flex items-center justify-center w-full px-6 py-4 m-2  border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
           >
             {selectedFile ? (
               <span className="text-sm text-gray-600">{selectedFile.name}</span>

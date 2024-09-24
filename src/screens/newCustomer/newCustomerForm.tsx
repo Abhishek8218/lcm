@@ -125,7 +125,7 @@ export const NewCustomerForm: React.FC = () => {
 
 
   return (
-    <div className="relative bg-white">
+    <div className="relative bg-slate-50">
       <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
         <ArrowLeft className="w-6 h-6" onClick={() => router.push("/")} />
         <div className="text-lg text-center font-semibold">New Customer</div>
@@ -317,7 +317,7 @@ export const NewCustomerForm: React.FC = () => {
           onVerify={handlePenVerification}
           isSuccess={isPanVerified}
         />
-        <div className="w-full border-t border-[#D1D9E3] p-4">
+        <div className="w-full border-t border-[#D1D9E3] p-4 bg-white">
           <button
             type="submit"
             className="w-full self-end p-3 mt-6 text-white bg-green-600 rounded-lg"
