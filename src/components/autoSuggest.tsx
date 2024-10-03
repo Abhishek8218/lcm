@@ -6,6 +6,8 @@ import { sheetState } from './bottomSheet/useModal';
 type SearchBarProps = {
   suggestions: string[];
   onSelect: (value: string) => void;
+  inputClassName?: string; // New prop for input class
+  wrapperClassName?: string; // New prop for wrapper div class
 };
 
 type SearchBarHandle = {
@@ -13,14 +15,14 @@ type SearchBarHandle = {
 };
 
 const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
-  ({ suggestions, onSelect }) => {
+  ({ suggestions, onSelect, inputClassName, wrapperClassName }) => {
     const [query, setQuery] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const [error, setError] = useState<string | null>(null);
     const [justSelected, setJustSelected] = useState(false);
-const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
+    const [isSheetOpen] = useRecoilState(sheetState); // Added state for bottom sheet
 
     const searchBarRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null); // Manage input focus manually
@@ -80,11 +82,9 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
 
     useEffect(() => {
       if (isSheetOpen && inputRef.current) {
-        console.log('blur');
-        // Remove focus from the input when the bottom sheet opens
         inputRef.current.blur();
       }
-    },[]);
+    }, [isSheetOpen]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (justSelected) {
@@ -100,40 +100,44 @@ const isSheetOpen = useRecoilState(sheetState)// Added state for bottom sheet
       setShowSuggestions(false);
       setJustSelected(true);
       onSelect(value);
-      
-      // Prevent re-focusing after selection
+
       if (inputRef.current) {
         inputRef.current.blur(); // Ensure the input is blurred
       }
     };
 
     return (
-      <div className="relative  flex  justify-center items-center se w-full max-w-md mx-auto">
-       <div className='relative w-[350px] '>
-        <input
-          ref={inputRef}
-          id="search-input"
-          type="text"
-          value={query}
-        
-          // tabIndex={isSheetOpen ? -1 : 0} // Disable tabbing into input when bottom sheet is open
-          onChange={handleChange}
-          className="w-[350px] flex gap-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-          placeholder="Search..."
-        />
+      <div
+        className={`relative flex justify-center items-center w-full max-w-md mx-auto ${
+          wrapperClassName || ''
+        }`}
+        ref={searchBarRef}
+      >
+        <div className={`relative w-[350px] ${wrapperClassName || ''}`}>
+          <input
+            ref={inputRef}
+            id="search-input"
+            type="text"
+            value={query}
+            onChange={handleChange}
+            className={`w-[350px] flex gap-10 px-4 py-2 text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
+              inputClassName || ''
+            }`}
+            placeholder="Search..."
+          />
 
-        {query && (
-          <div className="absolute right-0 top-0 flex flex-row gap-1 p-2">
-            <X size={24} color="#B4B4B8" onClick={() => setQuery('')} />
-            <span className="text-[#B4B4B8]">|</span>
-            <Search size={24} color="#B4B4B8" />
-          </div>
-        )}
-        {!query && (
-          <div className="absolute right-0 top-0 p-2">
-            <Search size={24} color="#B4B4B8" />
-          </div>
-        )}
+          {query && (
+            <div className="absolute right-0 top-1 flex flex-row gap-1 p-2">
+              <X size={20} color="#B4B4B8" onClick={() => setQuery('')} />
+              <span className="text-[#B4B4B8] -mt-1">|</span>
+              <Search size={20} color="#B4B4B8" />
+            </div>
+          )}
+          {!query && (
+            <div className="absolute right-0 top-1 p-2">
+              <Search size={20} color="#B4B4B8" />
+            </div>
+          )}
         </div>
         {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
         {showSuggestions && (
@@ -164,7 +168,6 @@ type HighlightedTextProps = {
   text: string;
   query: string;
 };
-
 
 const HighlightedText = ({ text, query }: HighlightedTextProps) => {
   if (!query) return <>{text}</>;

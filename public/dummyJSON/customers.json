@@ -1,0 +1,133 @@
+[
+    {
+      "name": "Ram Kumar",
+      "cases": 5,
+      "pendingPayments": 12,
+      "status": "Active",
+      "casesList": [
+        {
+         "caseID" : "1",
+          "customer": "Ram Kumar",
+
+          "tenure": 24,
+          "amount": 30000,
+          "paymentHealth": "Good",
+          "frequency": "Month",
+          "status": "Active"
+        },
+        {
+          "customer": "Ram Kumar",
+          "tenure": 48,
+          "amount": 100000,
+          "paymentHealth": "Very Good",
+          "frequency": "Month",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "Rabi Kumar",
+      "cases": 1,
+      "pendingPayments": 0,
+      "status": "Active",
+      "casesList": [
+        {
+          "customer": "Rabi Kumar",
+          "tenure": 12,
+          "amount": 30000,
+          "paymentHealth": "Not Good",
+          "frequency": "Month",
+          "status": "Active"
+        }
+      ]
+    },
+    {
+      "name": "Deep Kumar",
+      "cases": 2,
+      "pendingPayments": 20,
+      "status": "Dispute",
+      "casesList": [
+        {
+          "customer": "Deep Kumar",
+          "tenure": 6,
+          "amount": 20000,
+          "paymentHealth": "Good",
+          "frequency": "Week",
+          "status": "Active"
+        },
+        {
+          "customer": "Deep Kumar",
+          "tenure": 18,
+          "amount": 50000,
+          "paymentHealth": "Very Good",
+          "frequency": "Month",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "John Doe",
+      "cases": 2,
+      "pendingPayments": 10,
+      "status": "Active",
+      "casesList": [
+        {
+          "customer": "John Doe",
+          "tenure": 36,
+          "amount": 75000,
+          "paymentHealth": "Good",
+          "frequency": "Month",
+          "status": "Active"
+        },
+        {
+          "customer": "John Doe",
+          "tenure": 24,
+          "amount": 45000,
+          "paymentHealth": "Not Good",
+          "frequency": "Day",
+          "status": "Active"
+        }
+      ]
+    },
+    {
+      "name": "Emily Davis",
+      "cases": 3,
+      "pendingPayments": 15,
+      "status": "Completed",
+      "casesList": [
+        {
+          "customer": "Emily Davis",
+          "tenure": 12,
+          "amount": 30000,
+          "paymentHealth": "Very Good",
+          "frequency": "Month",
+          "status": "Completed"
+        },
+        {
+          "customer": "Emily Davis",
+          "tenure": 24,
+          "amount": 40000,
+          "paymentHealth": "Good",
+          "frequency": "Week",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "Michael Johnson",
+      "cases": 1,
+      "pendingPayments": 0,
+      "status": "Active",
+      "casesList": [
+        {
+          "customer": "Michael Johnson",
+          "tenure": 36,
+          "amount": 75000,
+          "paymentHealth": "Very Good",
+          "frequency": "Month",
+          "status": "Active"
+        }
+      ]
+    }
+  ]
+  

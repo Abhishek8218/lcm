@@ -4,8 +4,8 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea, Loader2 } from 'lucide-react'; // Import Lucide icons
 import { useRouter } from 'next/navigation';
-import { KYCBottomSheet } from '@/src/components/bottomSheet/kycOptionSheet';
-import { useModal } from '@/src/components/bottomSheet/useModal';
+
+
 
 const fetchManagementData = async () => {
 
@@ -21,12 +21,13 @@ const fetchManagementData = async () => {
 
 
 export const Management: React.FC = () => {
-  const { openModal, modalStack } = useModal();
+ 
 
 const router = useRouter();
 
+
 const handleCustomerClick = () => {
-  openModal("kyc-modal");
+router.push('/customers')
 }
 
 
@@ -57,7 +58,7 @@ const handleCustomerClick = () => {
 
         <div className="flex justify-between pb-6 pt-4">
           <button className="text-center flex flex-col items-center text-white" >
-            <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1}  onClick={() => {router.push("/new-case")}}/>
+            <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1}  onClick={() => {router.push("/cases")}}/>
             <span className='text-xs'>New Case</span>
           </button>
           <button className="text-center flex flex-col items-center text-white">
@@ -126,10 +127,7 @@ const handleCustomerClick = () => {
 </div>
 
 
-<KYCBottomSheet
-          isOpen={modalStack.includes("kyc-modal")}
-   
-        />
+
 
 
       </div>

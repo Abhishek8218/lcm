@@ -52,7 +52,7 @@ export const NewCase = () => {
   return (
     <div className="flex flex-col bg-slate-50">
       <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
-        <ArrowLeft className="w-6 h-6" onClick={() => { router.push("/") }} />
+        <ArrowLeft className="w-6 h-6" onClick={() => { router.push("/cases") }} />
         <div className="text-lg text-center font-semibold">New Case</div>
       </header>
       <main className="flex-1">

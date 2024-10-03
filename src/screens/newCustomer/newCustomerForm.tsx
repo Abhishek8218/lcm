@@ -127,7 +127,7 @@ export const NewCustomerForm: React.FC = () => {
   return (
     <div className="relative bg-slate-50">
       <header className="flex items-center justify-start gap-[25%] p-4 bg-main text-white">
-        <ArrowLeft className="w-6 h-6" onClick={() => router.push("/")} />
+        <ArrowLeft className="w-6 h-6" onClick={() => router.push("/customers")} />
         <div className="text-lg text-center font-semibold">New Customer</div>
       </header>
 
