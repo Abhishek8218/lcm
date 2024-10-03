@@ -32,7 +32,7 @@ const CustomerDetails: React.FC = () => {
       {/* Header */}
       <header className="flex flex-col items-center justify-start gap-y-7 p-4 bg-main text-white">
         <div className='w-full flex justify-start gap-[25%]'>
-          <ArrowLeft className="w-6 h-6" onClick={() => router.push("/")} />
+          <ArrowLeft className="w-6 h-6" onClick={() => router.push("/customers")} />
           <div className="text-lg text-center font-semibold">New Customer</div>
         </div>
      
