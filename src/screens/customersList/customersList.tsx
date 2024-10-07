@@ -42,7 +42,7 @@ export const CustomerList: React.FC = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Header */}
-      <header className="flex flex-col items-center justify-start gap-y-7 p-4 bg-main text-white">
+      <header className=" fixed w-full flex flex-col items-center justify-start gap-y-7 p-4 bg-main text-white">
         <div className='w-full flex justify-start gap-[25%]'>
           <ArrowLeft className="w-6 h-6" onClick={() => router.push("/")} />
           <div className="text-lg text-center font-semibold">New Customer</div>
@@ -59,7 +59,7 @@ export const CustomerList: React.FC = () => {
       </header>
 
       {/* Customer Cards */}
-      <div className="mt-6 px-4">
+      <div className="pt-36 px-4">
         {customers.map((customer, index) => (
             console.log("in list",customer),
           <div

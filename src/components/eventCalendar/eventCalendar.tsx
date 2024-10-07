@@ -1,47 +1,77 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { format, startOfWeek, addDays, addWeeks, subWeeks, isToday, parse } from 'date-fns';
-import AgendaModal from './agendaModal';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import {  ChevronLeft, ChevronRight } from 'lucide-react';
 
-type AgendaItem = {
+import AgendaCard from './agendaModal';
+
+// Define types for agenda items
+export type AgendaItem = {
     date: Date;
-    agendas: { title: string; time?: string; isAllDay?: boolean }[];
+    caseInfo: {
+        caseID: string;
+        customer: string;
+        tenure: number;
+        amount: number;
+        paymentHealth: string;
+        frequency: string;
+        status: string;
+    }[];
 };
 
+// Main EventCalendar component
 const EventCalendar = () => {
     const [currentWeekStart, setCurrentWeekStart] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 })); // Week starts on Monday
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const scrollRef = useRef<HTMLDivElement>(null);
-    const router = useRouter();
 
-    
+
+    // Helper function to parse date strings
     const parseDateFromApi = (dateString: string) => {
         return parse(dateString, 'dd-MM-yyyy', new Date());
     };
 
+    // Sample agenda data
     const demoAgendas: AgendaItem[] = [
-        { date: parseDateFromApi('15-09-2024'), agendas: [{ title: 'Meeting with John', time: '10:00 AM' }, { title: 'Lunch with client', time: '12:30 PM' }, { title: 'Project deadline', time: 'End of day' }, { title: 'Prepare presentation', time: '3:00 PM' }] },
-        { date: parseDateFromApi('16-09-2024'), agendas: [{ title: 'Project deadline', time: 'End of day' }, { title: 'Prepare presentation', time: '3:00 PM' }] },
-        { date: parseDateFromApi('17-09-2024'), agendas: [{ title: 'Client presentation', time: '11:00 AM' }] },
-        { date: parseDateFromApi('18-09-2024'), agendas: [{ title: 'Review feedback', time: '4:00 PM' }, { title: 'Team building activity', time: '2:00 PM' }] },
-        { date: parseDateFromApi('19-09-2024'), agendas: [{ title: 'Weekly review', time: '9:00 AM' }] },
-        { date: parseDateFromApi('20-09-2024'), agendas: [{ title: 'Company event', time: '6:00 PM' }, { title: 'Networking session', time: '8:00 PM' }] },
+        { 
+            date: parseDateFromApi('07-10-2024'), 
+            caseInfo: [
+                { caseID: "123", customer: "John Doe", tenure: 12, amount: 10000, paymentHealth: "Good", frequency: "Monthly", status: "Active" },
+                { caseID: "124", customer: "Jane Smith", tenure: 6, amount: 5000, paymentHealth: "Fair", frequency: "Quarterly", status: "Active" }
+            ]
+        },
+        { 
+            date: parseDateFromApi('08-10-2024'), 
+            caseInfo: [
+                { caseID: "125", customer: "Alex Brown", tenure: 10, amount: 8000, paymentHealth: "Poor", frequency: "Monthly", status: "Pending" }
+            ]
+        },
+        { 
+            date: parseDateFromApi('18-09-2024'), 
+            caseInfo: [
+                { caseID: "126", customer: "Chris Green", tenure: 8, amount: 7000, paymentHealth: "Good", frequency: "Annually", status: "Completed" }
+            ]
+        },
+        { 
+            date: parseDateFromApi('19-09-2024'), 
+            caseInfo: [
+                { caseID: "127", customer: "Lisa White", tenure: 5, amount: 3000, paymentHealth: "Good", frequency: "Monthly", status: "Active" }
+            ]
+        }
     ];
 
+    // Handle week navigation
     const handleWeekChange = (increment: boolean) => {
-        setCurrentWeekStart(prevDate => {
-            const newDate = increment ? addWeeks(prevDate, 1) : subWeeks(prevDate, 1);
-            return newDate;
-        });
+        setCurrentWeekStart(prevDate => increment ? addWeeks(prevDate, 1) : subWeeks(prevDate, 1));
     };
 
+    // Handle date selection
     const handleDateSelection = (date: Date) => {
         setSelectedDate(date);
-        setCurrentWeekStart(startOfWeek(date, { weekStartsOn: 1 })); // Week starts on Monday
+        setCurrentWeekStart(startOfWeek(date, { weekStartsOn: 1 }));
     };
 
+    // Preload surrounding weeks
     const preloadWeeks = () => {
         const currentWeek = currentWeekStart;
         const previousWeek = subWeeks(currentWeekStart, 1);
@@ -49,6 +79,7 @@ const EventCalendar = () => {
         return [previousWeek, currentWeek, nextWeek];
     };
 
+    // Handle horizontal scroll for the week
     const handleScroll = () => {
         if (scrollRef.current) {
             const { scrollLeft, clientWidth } = scrollRef.current;
@@ -67,16 +98,15 @@ const EventCalendar = () => {
         }
     }, [currentWeekStart]);
 
+    // Get agendas for the selected date
     const getAgendasForDate = (date: Date) => {
-        return demoAgendas.find(agenda => agenda.date.toDateString() === date.toDateString())?.agendas || [];
+        return demoAgendas.find(agenda => agenda.date.toDateString() === date.toDateString())?.caseInfo || [];
     };
 
     return (
-        <div className="w-full min-h-[100dvh] select-none">
-            <div className="flex justify-between items-center mb-4 bg-main px-2 border-b border-gray-400 py-4">
-                <div className=' hover:bg-blue-500 hover:rounded-full p-2'>
-                    <ArrowLeft className="w-6 h-6 text-white" onClick={() => router.push("/")} />
-                </div>
+        <div className="w-full min-h-[100dvh] select-none pt-14">
+            <div className="flex justify-between items-center mb-4 bg-main px-4 border-b border-gray-400 pb-4">
+            
                 <span className="text-base font-semibold text-white">
                     {format(currentWeekStart, 'MMMM yyyy')}
                 </span>
@@ -97,7 +127,7 @@ const EventCalendar = () => {
                 </div>
             </div>
 
-            {/* Updated Weekday labels starting from Monday */}
+            {/* Weekday labels */}  
             <div className="grid grid-cols-7 gap-1 mb-1 text-center text-xs font-medium border-b border-gray-300 pb-1 pt-2 px-[10px]">
                 <div className="text-gray-700">MON</div>
                 <div className="text-gray-700">TUE</div>
@@ -108,6 +138,7 @@ const EventCalendar = () => {
                 <div className="text-gray-700">SUN</div>
             </div>
 
+            {/* Calendar week view */}  
             <div
                 className="flex overflow-x-auto no-scrollbar"
                 ref={scrollRef}
@@ -142,8 +173,9 @@ const EventCalendar = () => {
                 ))}
             </div>
 
-            {/* Use the AgendaModal component */}
-            <AgendaModal selectedDate={selectedDate} getAgendasForDate={getAgendasForDate} />
+            {/* Pass full agenda data to AgendaModal */}
+            <AgendaCard caseInfo={getAgendasForDate(selectedDate)} selectedDate={selectedDate}  />
+
         </div>
     );
 };

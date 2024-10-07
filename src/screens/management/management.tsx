@@ -61,7 +61,7 @@ router.push('/customers')
             <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1}  onClick={() => {router.push("/cases")}}/>
             <span className='text-xs'>New Case</span>
           </button>
-          <button className="text-center flex flex-col items-center text-white">
+          <button className="text-center flex flex-col items-center text-white"  onClick={() => {router.push("/repayment")}}>
             <IndianRupee className="w-9 h-9 pb-1"  strokeWidth={1} />
             <span className='text-xs'>Repayment</span>
           </button>

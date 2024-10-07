@@ -1,62 +1,103 @@
-import React from 'react';
+// AgendaCard.tsx
 import { format } from 'date-fns';
+import React from 'react';
+import { RepaymentBottomSheet } from '../bottomSheet/repaymentSheet';
+import { useModal } from '../bottomSheet/useModal';
 
-type AgendaItem = {
-    title: string;
-    time?: string;
-    isAllDay?: boolean;  // Optional property to indicate all-day tasks
-};
-
-interface AgendaModalProps {
-    selectedDate: Date;
-    getAgendasForDate: (date: Date) => AgendaItem[];
+interface CaseInfo {
+  caseID: string;
+  customer: string;
+  tenure: number;
+  amount: number;
+  paymentHealth: string;
+  frequency: string;
+  status: string;
 }
 
-const AgendaModal: React.FC<AgendaModalProps> = ({ selectedDate, getAgendasForDate }) => {
-    const agendas = getAgendasForDate(selectedDate);
+interface AgendaCardProps {
+  caseInfo: CaseInfo[];
+  selectedDate: Date;
+}
 
-    // Sort agendas: All-day tasks first, then by time, then end-of-day tasks
-    const sortedAgendas = agendas.sort((a, b) => {
-        if (a.isAllDay && !b.isAllDay) return -1;
-        if (!a.isAllDay && b.isAllDay) return 1;
+const AgendaCard: React.FC<AgendaCardProps> = ({ caseInfo, selectedDate }) => {
 
-        if (a.time && b.time) {
-            if (a.time === 'End of day' && b.time !== 'End of day') return 1;
-            if (a.time !== 'End of day' && b.time === 'End of day') return -1;
-            return a.time.localeCompare(b.time);
-        }
+console.log("caseinfos",caseInfo);
 
-        if (a.time) return -1;
-        if (b.time) return 1;
-        return 0;
-    });
+const { openModal, modalStack } = useModal();
 
-    return (
-        <div className="inset-0 flex flex-col items-center justify-center z-50 mt-1 " >
-                <h3 className="font-medium text-base mb-2 bg-gray-100  p-2 w-full border-y border-gray-400 text-center">
-                  {format(selectedDate, 'MMMM dd, yyyy')}
-                </h3>
-            <div className="bg-white shadow-lg rounded-lg py-2  w-full min-h-[65vh] max-h-[350px] overflow-scroll custom-scrollbar">
-                <div className="space-y-1 px-1">
-                    {sortedAgendas.length > 0 ? (
-                        sortedAgendas.map((agenda, index) => (
-                            <div
-                                key={index}
-                                className="h-16  border-b border-gray-200 rounded px-2 flex flex-row justify-between items-center"
-                            >
-                                <div className="font-medium text-sm">{agenda.title}</div>
-                                {agenda.time && <div className="text-gray-600 text-sm"> {agenda.time}</div>}
-                            </div>
-                        ))
-                    ) : (
-                        <div className="h-16 bg-gray-100 border border-gray-200 rounded p-2 text-center text-gray-500">
-                            No agendas for this day
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+    
+    
+const handleCustomerClick = () => {
+    openModal("repayment-modal");
+}
+
+  return (
+    <div className="inset-0 flex flex-col items-center justify-center z-50 mt-2 w-full">
+    
+            {/*  Display the selected date */}
+        <h3 className="font-medium text-base mb-2 bg-gray-100 p-2 w-full border-y border-gray-400 text-center">
+          {format(selectedDate, 'MMMM dd, yyyy')}
+    
+        </h3>
+
+
+      {/* Iterate through caseInfo and display each case as a card */}
+      <div className="w-full p-2">
+        {caseInfo.map((caseInfo) => (
+           <div key={caseInfo.caseID} className="border border-[#D9D9D9] rounded-lg p-4 bg-white mb-4" onClick={handleCustomerClick}>
+           <div className="flex justify-between items-center">
+             <div>
+               <h3 className="font-medium text-[13px] text-[#4B5563]">
+               {"Customer Name "}
+               </h3>
+               <p className="text-[15px] font-semibold text-black">
+                 {caseInfo.customer}
+               </p>
+             </div>
+             <div>
+               <h3 className="font-medium text-[13px] text-[#4B5563] text-right">
+                 Case Amount
+               </h3>
+               <p className="text-[15px] font-semibold text-black text-right">
+                 Rs.{caseInfo.amount}
+               </p>
+             </div>
+           </div>
+     
+           <div className=" mt-2 py-2">
+
+     
+             <div className="flex justify-between items-center">
+               <div>
+                 <h3 className="font-medium text-[12px] text-[#4B5563]">
+                Customer Name
+                 </h3>
+                 <p className="text-[15px] font-semibold text-black">
+                 {caseInfo.customer}
+               </p>
+               </div>
+               <div>
+                 <h3 className="font-medium text-[12px] text-[#4B5563] text-right">
+                   Status
+                 </h3>
+                 <p
+                   className={`text-[13px] font-semibold  text-right ${
+                     caseInfo.status === "Active"
+                       ? "text-[#008B27]"
+                       : "text-[#1310A5]"
+                   }`}
+                 >
+                   {caseInfo.status}
+                 </p>
+               </div>
+             </div>
+           </div>
+         </div>
+        ))}
+      </div>
+      <RepaymentBottomSheet isOpen={modalStack.includes("repayment-modal")} />
+    </div>
+  );
 };
 
-export default AgendaModal;
+export default AgendaCard;
