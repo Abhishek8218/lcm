@@ -84,7 +84,7 @@ useEffect( () => {
 </div>
 
       </div>
-        <div className="flex flex-row justify-center space-x-16 ">
+        <div className="flex flex-row justify-center space-x-10 px-10 ">
           <button
             
             className="px-6 py-2 min-w-[150px] bg-green-500 text-white text-lg text-center font-semibold rounded-lg shadow-md hover:bg-green-600 transition-all"

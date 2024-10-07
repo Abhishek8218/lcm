@@ -2,31 +2,29 @@ import React from "react";
 
 export interface Case {
   caseID?: string;
-
   customer?: string;
   tenure: number;
   amount: number;
   paymentHealth: string;
   frequency: string;
   status: string;
-
 }
 
 interface SingleCaseCardProps {
   caseInfo: Case;
-  useID?: boolean;
+  useID?: boolean;  // Use case ID if provided, otherwise use customer name
 }
 
-export const SingleCaseCard: React.FC<SingleCaseCardProps> = ({ caseInfo,useID }) => {
+export const SingleCaseCard: React.FC<SingleCaseCardProps> = ({ caseInfo, useID }) => {
   return (
-    <div className="border border-[#D9D9D9] rounded-lg p-4 bg-white mb-4">
-      <div className="flex justify-between items-center">
+    <div className="border border-[#D9D9D9] rounded-lg p-4 bg-white mb-4 shadow-sm ">
+      <div className="flex justify-between items-center mb-2">
         <div>
           <h3 className="font-medium text-[13px] text-[#4B5563]">
-          {caseInfo.caseID && useID ? "Case ID" : "Customer Name "}
+            {useID && caseInfo.caseID ? "Case ID" : "Customer Name"}
           </h3>
           <p className="text-[15px] font-semibold text-black">
-            {caseInfo.caseID && useID ? caseInfo.caseID  : caseInfo.customer}
+            {useID && caseInfo.caseID ? caseInfo.caseID : caseInfo.customer}
           </p>
         </div>
         <div>
@@ -34,24 +32,24 @@ export const SingleCaseCard: React.FC<SingleCaseCardProps> = ({ caseInfo,useID }
             Case Amount
           </h3>
           <p className="text-[15px] font-semibold text-black text-right">
-            Rs.{caseInfo.amount}
+            Rs. {caseInfo.amount.toLocaleString()} {/* Format the amount */}
           </p>
         </div>
       </div>
 
-      <div className="border-t mt-2 py-2">
-        <div className="flex justify-between items-center">
+      <div className="border-t mt-2 pt-2">
+        <div className="flex justify-between items-center mb-2">
           <div>
             <h3 className="font-medium text-[12px] text-[#4B5563]">Tenure</h3>
             <p className="text-[13px] font-semibold text-black">
-              {caseInfo.tenure}
+              {caseInfo.tenure} months
             </p>
           </div>
           <div>
             <h3 className="font-medium text-[12px] text-[#4B5563] text-right">
               Frequency
             </h3>
-            <p className="text-[13px] text-right font-semibold text-black">
+            <p className="text-[13px] font-semibold text-black text-right">
               {caseInfo.frequency}
             </p>
           </div>
@@ -63,12 +61,12 @@ export const SingleCaseCard: React.FC<SingleCaseCardProps> = ({ caseInfo,useID }
               Payment Health
             </h3>
             <p
-              className={`text-[13px] font-semibold  ${
+              className={`text-[13px] font-semibold ${
                 caseInfo.paymentHealth === "Not Good"
                   ? "text-[#D43E3E]"
                   : caseInfo.paymentHealth === "Good"
                   ? "text-[#22C55E]"
-                  : "text-[#008B27]"
+                  : "text-[#008B27]"  // Assuming "Excellent" or similar for default
               }`}
             >
               {caseInfo.paymentHealth}
@@ -79,10 +77,10 @@ export const SingleCaseCard: React.FC<SingleCaseCardProps> = ({ caseInfo,useID }
               Status
             </h3>
             <p
-              className={`text-[13px] font-semibold  text-right ${
+              className={`text-[13px] font-semibold text-right ${
                 caseInfo.status === "Active"
-                  ? "text-[#008B27]"
-                  : "text-[#1310A5]"
+                  ? "text-[#008B27]"  // Green for Active
+                  : "text-[#1310A5]"  // Blue for Inactive or other statuses
               }`}
             >
               {caseInfo.status}

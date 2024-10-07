@@ -14,12 +14,14 @@
     "date-fns": "^4.0.0",
     "lucide-react": "^0.439.0",
     "next": "14.2.9",
+    "next-query-params": "^5.0.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "react-spring-bottom-sheet": "^3.4.1",
     "recoil": "^0.7.7",
+    "use-query-params": "^2.2.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {

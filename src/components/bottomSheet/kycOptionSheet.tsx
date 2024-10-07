@@ -21,7 +21,7 @@ export const KYCBottomSheet: React.FC<KYCBottomSheetProps> = ({
 //     closeModal();
 //   };
 
-  const snapPoints = [400, 700];
+  const snapPoints = [300];
 
   return (
     <BottomSheet
@@ -42,20 +42,21 @@ export const KYCBottomSheet: React.FC<KYCBottomSheetProps> = ({
       }
     >
       <div className="p-4 h-full " >
-        <div className="flex flex-col justify-center space-y-4 min-h-[300px] ">
+        <div className="flex flex-col justify-center space-y-4 min-h-[220px] ">
           <Link
-            href="/new-customer"
+            href="/manual-kyc"
             className="px-6 py-4 bg-green-500 text-white text-lg text-center font-semibold rounded-lg shadow-md hover:bg-green-600 transition-all"
             onClick={closeModal}
           >
             Manual KYC
           </Link>
-          <button
-            className="px-6 py-4 bg-main text-white text-lg font-semibold rounded-lg shadow-md hover:bg-main transition-all"
-            
+          <Link
+          href="/e-kyc"
+            className="px-6 py-4 bg-main text-white text-lg text-center font-semibold rounded-lg shadow-md hover:bg-main transition-all"
+            onClick={closeModal}
           >
             Digital KYC
-          </button>
+          </Link>
         </div>
       </div>
     </BottomSheet>
