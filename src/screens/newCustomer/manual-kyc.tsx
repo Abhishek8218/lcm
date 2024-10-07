@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
-import { ArrowLeft, Upload, CheckCircle, XCircle, User, Briefcase, Home, Users, IndianRupee, Camera } from "lucide-react";
+import { ArrowLeft, Upload, CheckCircle, XCircle, User, Briefcase, Home, Users, IndianRupee } from "lucide-react";
 import Image from "next/image";
 
 const schema = yup.object({

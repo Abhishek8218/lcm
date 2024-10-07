@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ArrowLeft, CheckCircle, Upload, XCircle, CreditCard, Smartphone, FileText, User, Camera } from "lucide-react";
+import { ArrowLeft, CheckCircle, Upload, XCircle, CreditCard, Smartphone, FileText, User } from "lucide-react";
 import { AadhaarModal } from "../../components/bottomSheet/aadhaar-modal";
 import { useModal } from "@/src/components/bottomSheet/useModal";
 import { MobileModal } from "@/src/components/bottomSheet/mobileModal";
@@ -75,6 +75,9 @@ export const NewCustomerForm: React.FC = () => {
     if (isAadharValid && isPanValid && profileImage) {
       console.log(data);
       console.log(fileStates);
+      console.log("aadhar:", aadhar);
+      console.log("pan:", pan); 
+      console.log("mobile:", mobile);
       console.log("Profile Image:", profileImage);
       // Handle form submission
     } else {
