@@ -2,8 +2,10 @@
 'use client'
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea, Loader2 } from 'lucide-react'; // Import Lucide icons
+import { Users,  Search, User, ClipboardPlus, IndianRupee, ChartArea, Loader2, UserRoundPlus } from 'lucide-react'; // Import Lucide icons
 import { useRouter } from 'next/navigation';
+import { userRoleState } from '@/src/recoil/atoms/roleAtom';
+import { useRecoilValue } from 'recoil';
 
 
 
@@ -21,6 +23,8 @@ const fetchManagementData = async () => {
 
 
 export const Management: React.FC = () => {
+
+  const userRole = useRecoilValue(userRoleState);
  
 
 const router = useRouter();
@@ -35,6 +39,8 @@ router.push('/customers')
     queryKey: ['managementData'],
     queryFn: fetchManagementData,
   });
+
+  console.log("user Role is", userRole);
 
   if (isLoading) return <div><Loader2 className=' absolute top-1/2 right-1/2 animate-spin'/></div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
@@ -59,7 +65,7 @@ router.push('/customers')
         <div className="flex justify-between pb-6 pt-4">
           <button className="text-center flex flex-col items-center text-white" >
             <ClipboardPlus className="w-9 h-9 pb-1" strokeWidth={1}  onClick={() => {router.push("/cases")}}/>
-            <span className='text-xs'>New Case</span>
+            <span className='text-xs'>Cases</span>
           </button>
           <button className="text-center flex flex-col items-center text-white"  onClick={() => {router.push("/repayment")}}>
             <IndianRupee className="w-9 h-9 pb-1"  strokeWidth={1} />
@@ -73,6 +79,10 @@ router.push('/customers')
             <ChartArea className="w-9 h-9 pb-1"  strokeWidth={1}/>
             <span className='text-xs'>Reports</span>
           </button>
+          {userRole === 'admin' && <button className="text-center flex flex-col items-center text-white" onClick={() => {router.push("/auth/register")}}>
+            <UserRoundPlus className="w-9 h-9 pb-1"  strokeWidth={1} />
+            <span className='text-xs'>Add User</span>
+          </button>}
         </div>
         </nav>
 {/* 

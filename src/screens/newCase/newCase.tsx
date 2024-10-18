@@ -8,13 +8,17 @@ import { useRouter } from "next/navigation";
 import { CustomerModal } from "@/src/components/bottomSheet/customerSheet";
 import { useModal } from "@/src/components/bottomSheet/useModal";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { newCase } from "@/src/services/case";
+import { useMutation } from "@tanstack/react-query";
 
 const schema = yup.object({
-  customer: yup.string().required("Customer is required"),
-  loanAmount: yup.number().positive().required("Loan Amount is required"),
-  loanTenure: yup.string().required("Loan Tenure is required"),
-  paymentCycle: yup.string().required("Payment Cycle is required"), // Payment Cycle validation
-  finalAmount: yup.number().positive().required("Final Amount is required"),
+  customerId: yup.string().required("Customer is required"),
+  loan_amount: yup.number().positive().required("Loan Amount is required"),
+  loan_tenure: yup.number().required("Loan Tenure is required"),
+  payment_cycle: yup.string().required("Payment Cycle is required"), // Payment Cycle validation
+  emi_amount: yup.number().positive().required("Final Amount is required"),
+  final_amount: yup.number().positive().required("Final Amount is required"),
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
@@ -23,30 +27,43 @@ export const NewCase = () => {
   const router = useRouter();
   const { openModal, modalStack } = useModal();
   const [customer, setCustomer] = useState<string>("");
-  const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { control, handleSubmit, watch, setValue, formState: { errors } ,reset} = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      finalAmount: 0,
+      final_amount: 0,
     },
   });
 
-  const loanAmount = watch("loanAmount");
-  const loanTenure = watch("loanTenure");
+  const loan_amount = watch("loan_amount");
+  const loan_tenure = watch("loan_tenure");
 
-  const calculateFinalAmount = (amount: number, tenure: string) => {
+  const calculatefinal_amount = (amount: number, tenure: number) => {
     const rate = 0.1; // 10% interest rate
-    const years = parseInt(tenure) || 0;
+    const years = tenure || 0;
     return amount * (1 + rate * years);
   };
 
+
+const newCaseMutation = useMutation({
+    mutationKey: ['createCase'],
+    mutationFn: newCase,
+    onSuccess: () => {
+        console.log('Case created successfully!');
+        toast.success('Case created successfully!');
+        // Redirect to dashboard or any other page
+    }
+
+});
   const onSubmit = (data: FormData) => {
     console.log(data);
+    reset();
+    newCaseMutation.mutate(data);
     // Handle form submission
   };
 
   const handleCustomerSelect = (value: string) => {
     setCustomer(value);
-    setValue("customer", value);
+    setValue("customerId", value);
   };
 
   return (
@@ -62,7 +79,7 @@ export const NewCase = () => {
               <label htmlFor="customer" className="block text-sm font-medium text-gray-700 mb-2">Customer</label>
               <div className="relative flex" onClick={() => openModal('customer-modal')}>
                 <Controller
-                  name="customer"
+                  name="customerId"
                   control={control}
                   render={({ field }) => (
                     <input
@@ -79,14 +96,14 @@ export const NewCase = () => {
                   <ChevronDown className="h-4 w-4" />
                 </div>
               </div>
-              {errors.customer && <p className="mt-1 text-sm text-red-600">{errors.customer.message}</p>}
+              {errors.customerId && <p className="mt-1 text-sm text-red-600">{errors.customerId.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="loanAmount" className="block text-sm font-medium text-gray-700 mb-2">Loan Amount</label>
+              <label htmlFor="loan_amount" className="block text-sm font-medium text-gray-700 mb-2">Loan Amount</label>
               <div className="flex">
                 <Controller
-                  name="loanAmount"
+                  name="loan_amount"
                   control={control}
                   render={({ field }) => (
                     <input
@@ -95,7 +112,7 @@ export const NewCase = () => {
                       onChange={(e) => {
                         field.onChange(e);
                         const newAmount = parseFloat(e.target.value);
-                        setValue("finalAmount", calculateFinalAmount(newAmount, loanTenure));
+                        setValue("final_amount", calculatefinal_amount(newAmount, loan_tenure));
                       }}
                       placeholder="0"
                       className="flex-1 pl-2 py-3 border rounded-lg"
@@ -103,40 +120,73 @@ export const NewCase = () => {
                   )}
                 />
               </div>
-              {errors.loanAmount && <p className="mt-1 text-sm text-red-600">{errors.loanAmount.message}</p>}
+              {errors.loan_amount && <p className="mt-1 text-sm text-red-600">{errors.loan_amount.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="loanTenure" className="block text-sm font-medium text-gray-700 mb-2">Loan Tenure</label>
+              <label htmlFor="loan_tenure" className="block text-sm font-medium text-gray-700 mb-2">Loan Tenure</label>
               <div className="relative flex">
                 <Controller
-                  name="loanTenure"
+                  name="loan_tenure"
                   control={control}
                   render={({ field }) => (
                     <select
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
-                        setValue("finalAmount", calculateFinalAmount(loanAmount, e.target.value));
+                        setValue("final_amount", calculatefinal_amount(loan_amount, Number(e.target.value)));
                       }}
                       className="flex-1 px-2 py-3 border rounded-lg"
                     >
-                      <option value="">Select Loan Tenure</option>
-                      <option value="1">1 Year</option>
-                      <option value="2">2 Years</option>
-                      <option value="3">3 Years</option>
+                      <option value={1}>Select Loan Tenure</option>
+                      <option value={2}>1 Year</option>
+                      <option value={3}>2 Years</option>
+                      <option value={4}>3 Years</option>
                     </select>
                   )}
                 />
               </div>
-              {errors.loanTenure && <p className="mt-1 text-sm text-red-600">{errors.loanTenure.message}</p>}
+              {errors.loan_tenure && <p className="mt-1 text-sm text-red-600">{errors.loan_tenure.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="emi_amount" className="block text-sm font-medium text-gray-700 mb-2">EMI Amount</label>
+              <div className="flex">
+              <Controller
+                  name="emi_amount"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        
+                      }}
+                      className="flex-1 px-2 py-3 border rounded-lg"
+                    >
+                      <option value="">Select Loan Tenure</option>
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                      <option value="300">300</option>
+                      <option value="400">400</option>
+                      <option value="500">500</option>
+                      <option value="600">600</option>
+                      <option value="700">700</option>
+                      <option value="800">800</option>
+                      <option value="900">900</option>
+                      <option value="1000">1000</option>
+
+                    </select>
+                  )}
+                />
+              </div>
+              {errors.emi_amount && <p className="mt-1 text-sm text-red-600">{errors.emi_amount.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="paymentCycle" className="block text-sm font-medium text-gray-700 mb-2">Payment Cycle</label>
+              <label htmlFor="payment_cycle" className="block text-sm font-medium text-gray-700 mb-2">Payment Cycle</label>
               <div className="relative flex">
                 <Controller
-                  name="paymentCycle"
+                  name="payment_cycle"
                   control={control}
                   render={({ field }) => (
                     <select
@@ -151,14 +201,14 @@ export const NewCase = () => {
                   )}
                 />
               </div>
-              {errors.paymentCycle && <p className="mt-1 text-sm text-red-600">{errors.paymentCycle.message}</p>}
+              {errors.payment_cycle && <p className="mt-1 text-sm text-red-600">{errors.payment_cycle.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="finalAmount" className="block text-sm font-medium text-gray-700 mb-2">Final Amount</label>
+              <label htmlFor="final_amount" className="block text-sm font-medium text-gray-700 mb-2">Final Amount</label>
               <div className="flex">
                 <Controller
-                  name="finalAmount"
+                  name="final_amount"
                   control={control}
                   render={({ field }) => (
                     <input
@@ -171,7 +221,7 @@ export const NewCase = () => {
                   )}
                 />
               </div>
-              {errors.finalAmount && <p className="mt-1 text-sm text-red-600">{errors.finalAmount.message}</p>}
+              {errors.final_amount && <p className="mt-1 text-sm text-red-600">{errors.final_amount.message}</p>}
             </div>
           </div>
 
